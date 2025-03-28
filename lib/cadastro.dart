@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myhttp/http.dart' as http;  // Certifique-se de que o pacote http está importado corretamente
+import 'dart:convert';
 
 void main() {
   runApp(const PaginaCadastro());
@@ -32,7 +34,7 @@ class _PaginaCadastroState extends State<PaginaCadastro> {
     });
   }
 
-  void _handleSubmit() {
+  Future<void> _handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       if (_formData['senha'] != _formData['confirmarSenha']) {
@@ -42,11 +44,34 @@ class _PaginaCadastroState extends State<PaginaCadastro> {
         return;
       }
 
-      // Assuming you have a function to send data to the server
-      // sendCadastroData(_formData);
+      final cadastroData = json.encode({
+        ..._formData,
+        'datanascimento': _formData['dataNascimento'],
+      });
 
-      // Navigate to login page on successful registration
-      Navigator.pushNamed(context, '/Login');
+      try {
+        final response = await http.post(
+          Uri.parse('http://localhost:8080/cadastro'),
+          headers: {'Content-Type': 'application/json'},
+          body: cadastroData,
+        );
+
+        if (response.statusCode == 201) {
+          setState(() {
+            _mensagem = 'Cadastro realizado com sucesso!';
+          });
+          Navigator.pushNamed(context, '/Login');
+        } else {
+          final errorResponse = json.decode(response.body);
+          setState(() {
+            _mensagem = errorResponse['message'] ?? 'Erro no cadastro.';
+          });
+        }
+      } catch (error) {
+        setState(() {
+          _mensagem = 'Erro ao se conectar ao servidor. Tente novamente.';
+        });
+      }
     }
   }
 
@@ -77,47 +102,39 @@ class _PaginaCadastroState extends State<PaginaCadastro> {
                     const SizedBox(height: 16),
                     _buildTextFormField(
                       label: 'Nome',
-                      onSaved: (value) =>
-                          _handleChange('nome', value ?? ''),
+                      onSaved: (value) => _handleChange('nome', value ?? ''),
                     ),
                     _buildTextFormField(
                       label: 'Sobrenome',
-                      onSaved: (value) =>
-                          _handleChange('sobrenome', value ?? ''),
+                      onSaved: (value) => _handleChange('sobrenome', value ?? ''),
                     ),
                     _buildTextFormField(
                       label: 'CPF',
-                      onSaved: (value) =>
-                          _handleChange('cpf', value ?? ''),
+                      onSaved: (value) => _handleChange('cpf', value ?? ''),
                     ),
                     _buildTextFormField(
                       label: 'Data de Nascimento',
-                      onSaved: (value) =>
-                          _handleChange('dataNascimento', value ?? ''),
+                      onSaved: (value) => _handleChange('dataNascimento', value ?? ''),
                       keyboardType: TextInputType.datetime,
                     ),
                     _buildTextFormField(
                       label: 'Email',
-                      onSaved: (value) =>
-                          _handleChange('email', value ?? ''),
+                      onSaved: (value) => _handleChange('email', value ?? ''),
                       keyboardType: TextInputType.emailAddress,
                     ),
                     _buildTextFormField(
                       label: 'Telefone',
-                      onSaved: (value) =>
-                          _handleChange('telefone', value ?? ''),
+                      onSaved: (value) => _handleChange('telefone', value ?? ''),
                       keyboardType: TextInputType.phone,
                     ),
                     _buildTextFormField(
                       label: 'Senha',
-                      onSaved: (value) =>
-                          _handleChange('senha', value ?? ''),
+                      onSaved: (value) => _handleChange('senha', value ?? ''),
                       obscureText: true,
                     ),
                     _buildTextFormField(
                       label: 'Confirmar Senha',
-                      onSaved: (value) =>
-                          _handleChange('confirmarSenha', value ?? ''),
+                      onSaved: (value) => _handleChange('confirmarSenha', value ?? ''),
                       obscureText: true,
                     ),
                     const SizedBox(height: 16),
