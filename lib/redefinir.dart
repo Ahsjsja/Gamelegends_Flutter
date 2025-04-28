@@ -172,11 +172,7 @@ class _PaginaRedefinirSenhaState extends State<PaginaRedefinirSenha> {
               children: [
                 Icon(Icons.facebook, color: Colors.white),
                 SizedBox(width: 10),
-                Icon(Icons.twitter, color: Colors.white),
-                SizedBox(width: 10),
-                Icon(Icons.instagram, color: Colors.white),
-                SizedBox(width: 10),
-                Icon(Icons.linkedin, color: Colors.white),
+                
               ],
             ),
           ],

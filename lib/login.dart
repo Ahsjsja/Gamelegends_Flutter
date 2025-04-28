@@ -167,7 +167,7 @@ class _PaginaLoginState extends State<PaginaLogin> {
                       ElevatedButton(
                         onPressed: handleLogin,
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF90017F),
+                          backgroundColor: Color(0xFF90017F),
                           padding: EdgeInsets.symmetric(
                             horizontal: 40,
                             vertical: 10,
@@ -198,5 +198,4 @@ class _PaginaLoginState extends State<PaginaLogin> {
       ),
     );
   }
-}
 }
