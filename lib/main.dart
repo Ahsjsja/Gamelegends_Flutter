@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(title: 'Como enganar as pessoas com sua situação de pobre'),
+        '/': (context) => const MyHomePage(title: 'Como enganar as pessoas com sua situação de pobreza'),
         '/cadastro': (context) => const CadastroForm(),
       },
     );

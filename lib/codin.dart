@@ -20,12 +20,15 @@ class _PaginaCodinState extends State<PaginaCodin> {
       body: Column(
         children: [
           // Cabeçalho...
+          _navItem(Icons.home, 'Início', '/inicio'),
+          _navItem(Icons.info, 'Sobre', '/sobre'),
+          // Adicione outros itens conforme necessário
         ],
       ),
     );
   }
 
-  // Corrigir _navItem com ícones válidos
+  // Corrigido: _navItem com ícones válidos e navegação correta
   Widget _navItem(IconData icon, String label, String route) {
     return GestureDetector(
       onTap: () {
@@ -38,13 +41,13 @@ class _PaginaCodinState extends State<PaginaCodin> {
           color: const Color(0xFF780069),
           borderRadius: BorderRadius.circular(5),
         ),
-        child: Row(
+child: Row(
           children: [
             Icon(icon, color: Colors.white),
             const SizedBox(width: 8),
-            Text(
+            Text( 
               label,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
           ],
         ),

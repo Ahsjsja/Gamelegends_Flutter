@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(
+                         TextButton(
                             style: TextButton.styleFrom(
                               backgroundColor: const Color(0xFF780069),
                               padding: const EdgeInsets.symmetric(
@@ -266,7 +266,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 
-
+/*
 class CadastroForm extends StatefulWidget {
   const CadastroForm({super.key});
 
@@ -497,4 +497,4 @@ class _CadastroFormState extends State<CadastroForm> {
       ),
     );
   }
-}
+}*/
