@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'cadastro.dart';
+import 'cadastro.dart'; // Certifique-se que este arquivo existe e está no mesmo diretório
 
 void main() {
   runApp(const MyApp());
@@ -11,30 +11,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Game Legends',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        fontFamily: 'Arial',
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(title: 'Como enganar as pessoas com sua situação de pobreza'),
+        '/': (context) => const HomePage(),
         '/cadastro': (context) => const CadastroForm(),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -48,7 +48,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text('Game Legends'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pushNamed(context, '/cadastro'),
+            child: const Text(
+              'Cadastro',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
