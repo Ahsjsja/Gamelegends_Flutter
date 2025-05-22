@@ -57,12 +57,12 @@ class _CustomNavbarState extends State<CustomNavbar> {
                           _NavbarButton(
                             icon: Icons.home,
                             label: 'Início',
-                            onTap: () => Navigator.pushNamed(context, '/index'),
+                            onTap: () => Navigator.pushNamed(context, '/'),
                           ),
                           _NavbarButton(
                             icon: Icons.videogame_asset,
                             label: 'Games',
-                            onTap: () => Navigator.pushNamed(context, '/'),
+                            onTap: () => Navigator.pushNamed(context, '/index'),
                           ),
                           _NavbarButton(
                             icon: Icons.help_outline,
@@ -72,7 +72,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
                           _NavbarButton(
                             icon: Icons.headset_mic,
                             label: 'Suporte',
-                            onTap: () => Navigator.pushNamed(context, '/suporte'),
+                            onTap: () => Navigator.pushNamed(context, '/suporte'), // <-- Aqui está a integração do suporte!
                           ),
                           const Spacer(),
                           // Pesquisa
@@ -185,7 +185,7 @@ class _CustomNavbarState extends State<CustomNavbar> {
                       text: 'Suporte',
                       onTap: () {
                         toggleMenu();
-                        Navigator.pushNamed(context, '/suporte');
+                        Navigator.pushNamed(context, '/suporte'); // <-- Integração aqui também!
                       },
                     ),
                     Padding(

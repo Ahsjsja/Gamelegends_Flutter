@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'navbar.dart'; // Certifique-se de que o arquivo navbar.dart está no mesmo diretório
 
 class PaginaSuporte extends StatefulWidget {
   const PaginaSuporte({Key? key}) : super(key: key);
@@ -46,13 +47,10 @@ class _PaginaSuporteState extends State<PaginaSuporte> {
   @override
   void initState() {
     super.initState();
-    // Simula carregar usuário do local storage (exemplo)
-    // Use o pacote shared_preferences para persistência real, se desejar
-    // Para simular, deixe vazio ou preencha se quiser testar o perfil logado
     setState(() {
       formData = {
         'email': "",
-        'usuario': "", // "Cliente" ou "Desenvolvedor"
+        'usuario': "",
       };
     });
   }
@@ -74,11 +72,7 @@ class _PaginaSuporteState extends State<PaginaSuporte> {
                 fit: BoxFit.contain,
               ),
             ),
-            const SizedBox(width: 16),
-            const Text(
-              "Game Legends Suporte",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-            ),
+            
             const Spacer(),
             // Botões de navegação
             ...[
@@ -92,14 +86,13 @@ class _PaginaSuporteState extends State<PaginaSuporte> {
                     style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
                         textStyle: const TextStyle(fontSize: 16)),
-                    onPressed: () => Navigator.pushNamed(context, nav["route"]!),
+                    onPressed: () => Navigator.pushNamed(
+                        context, nav["route"] as String),
                     icon: Icon(nav["icon"] as IconData, size: 18),
-                    label: Text(nav["label"]!),
+                    label: Text(nav["label"] as String),
                   ),
                 )),
-            // Spacer
             const SizedBox(width: 8),
-            // Usuário logado/deslogado
             if (formData["usuario"] != null && formData["usuario"]!.isNotEmpty)
               TextButton.icon(
                 onPressed: () {
@@ -119,8 +112,7 @@ class _PaginaSuporteState extends State<PaginaSuporte> {
               ),
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/Cadastro'),
-                child:
-                    const Text("Registre-se", style: TextStyle(color: Colors.white)),
+                child: const Text("Registre-se", style: TextStyle(color: Colors.white)),
               ),
             ]
           ],

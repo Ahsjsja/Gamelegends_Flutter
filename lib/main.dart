@@ -1,5 +1,35 @@
 import 'package:flutter/material.dart';
 import 'navbar.dart';
+import 'suporte.dart';
+import 'login.dart';
+import 'cadastro.dart';
+import 'sobre.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) =>  IndexPrincipal(),
+        '/index': (context) =>  IndexPrincipal(),
+        '/que': (context) =>  PaginaSobre(),
+        '/suporte': (context) =>  PaginaSuporte(),
+        '/login': (context) =>  PaginaLogin(),
+        '/cadastro': (context) =>  CadastroForm(),
+        // Exemplo extra:
+        // '/descricao': (context) => const TelaDescricao(),
+      },
+    );
+  }
+}
 
 class IndexPrincipal extends StatefulWidget {
   const IndexPrincipal({Key? key}) : super(key: key);
@@ -352,12 +382,4 @@ class _IndexPrincipalState extends State<IndexPrincipal> {
             ),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: IndexPrincipal(),
-    // Adicione routes: { '/descricao': (_) => SuaTelaDescricao(), ...} conforme necessário!
-  ));
 }
