@@ -83,23 +83,23 @@ class _PaginaLoginState extends State<PaginaLogin> {
                     title:
                         Text('Início', style: TextStyle(color: Colors.white)),
                     leading: Icon(Icons.home, color: Colors.white),
-                    onTap: () => Navigator.pushNamed(context, '/Index'),
+                    onTap: () => Navigator.pushNamed(context, '/'),
                   ),
                   ListTile(
                     title: Text('Games', style: TextStyle(color: Colors.white)),
                     leading: Icon(Icons.videogame_asset, color: Colors.white),
-                    onTap: () => Navigator.pushNamed(context, '/'),
+                    onTap: () => Navigator.pushNamed(context, '/index'),
                   ),
                   ListTile(
                     title: Text('Sobre', style: TextStyle(color: Colors.white)),
                     leading: Icon(Icons.info, color: Colors.white),
-                    onTap: () => Navigator.pushNamed(context, '/Que'),
+                    onTap: () => Navigator.pushNamed(context, '/que'),
                   ),
                   ListTile(
                     title:
                         Text('Suporte', style: TextStyle(color: Colors.white)),
                     leading: Icon(Icons.headset, color: Colors.white),
-                    onTap: () => Navigator.pushNamed(context, '/Suporte'),
+                    onTap: () => Navigator.pushNamed(context, '/suporte'),
                   ),
                 ],
               ),
@@ -180,12 +180,12 @@ class _PaginaLoginState extends State<PaginaLogin> {
                       ),
                       TextButton(
                         onPressed: () =>
-                            Navigator.pushNamed(context, '/Cadastro'),
+                            Navigator.pushNamed(context, '/cadastro'),
                         child: Text("Ainda não tem conta? Cadastre-se"),
                       ),
                       TextButton(
                         onPressed: () =>
-                            Navigator.pushNamed(context, '/MandarEmail'),
+                            Navigator.pushNamed(context, '/mandarEmail'),
                         child: Text("Esqueceu a senha? Redefinir senha"),
                       ),
                     ],

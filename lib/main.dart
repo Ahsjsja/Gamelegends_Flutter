@@ -4,6 +4,15 @@ import 'suporte.dart';
 import 'login.dart';
 import 'cadastro.dart';
 import 'sobre.dart';
+import 'index.dart';
+import 'android.dart';
+import 'aventura.dart';
+import 'cartas.dart';
+import 'desenvolvendo.dart';
+import 'desenvolvido.dart';
+import 'educacional.dart';
+import 'esporte.dart';
+import 'essasemana.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,12 +27,21 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const IndexPrincipal(),
+        '/': (context) => const MainPrincipal(),
         '/index': (context) => const IndexPrincipal(),
         '/que': (context) => PaginaSobre(),
         '/suporte': (context) => PaginaSuporte(),
         '/login': (context) => PaginaLogin(),
         '/cadastro': (context) => CadastroForm(),
+        '/android': (context) => AndroidPage(),
+        '/cartas': (context) => CartasPage(),
+        '/aventura': (context) => AventuraPage(),
+        '/desenvolvendo': (context) => DesenvolvendoPage(),
+        '/desenvolvido': (context) => DesenvolvidoPage(),
+        '/essasemana': (context) => EssasemanaPage(),
+        '/educacional': (context) => EducacionalPage(),
+        '/esporte': (context) => EsportePage(),
+
         // Exemplo extra:
         // '/descricao': (context) => const TelaDescricao(),
       },
@@ -31,14 +49,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class IndexPrincipal extends StatefulWidget {
-  const IndexPrincipal({Key? key}) : super(key: key);
+class MainPrincipal extends StatefulWidget {
+  const MainPrincipal({Key? key}) : super(key: key);
 
   @override
-  State<IndexPrincipal> createState() => _IndexPrincipalState();
+  State<MainPrincipal> createState() => _MainPrincipalState();
 }
 
-class _IndexPrincipalState extends State<IndexPrincipal> {
+class _MainPrincipalState extends State<MainPrincipal> {
   final ScrollController _carouselController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
 

@@ -219,7 +219,7 @@ class _CadastroFormState extends State<CadastroForm> {
                     children: [
                       const Text('Já tem uma conta? '),
                       GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, '/Login'),
+                        onTap: () => Navigator.pushNamed(context, '/login'),
                         child: const Text(
                           'Login',
                           style: TextStyle(color: Color(0xFF007BFF), fontWeight: FontWeight.bold),

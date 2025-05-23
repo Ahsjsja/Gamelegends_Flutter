@@ -19,22 +19,7 @@ class _PaginaSobreState extends State<PaginaSobre> {
   @override
   void initState() {
     super.initState();
-    // Simula carregar do localStorage
-    // Aqui você pode integrar com o seu sistema de autenticação real
-    // Exemplo: Se usar algum provider ou shared_prefs, substitua esta lógica
-    // No web, pode usar: html.window.localStorage['usuario']
-    // Exemplo fictício:
-    /*
-    final usuarioData = ...;
-    if (usuarioData != null) {
-      setState(() {
-        formData = {
-          'email': usuarioData.email ?? "",
-          'usuario': usuarioData.usuario ?? "",
-        };
-      });
-    }
-    */
+    // Aqui você pode integrar com o seu sistema de autenticação real se quiser.
   }
 
   void toggleMenu() {
@@ -74,7 +59,7 @@ class _PaginaSobreState extends State<PaginaSobre> {
                   padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 12),
                   child: Text(
                     'Quem Somos',
-                    style: Theme.of(context).textTheme.headline3?.copyWith(
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           shadows: [
