@@ -23,6 +23,7 @@ class _CadastroFormState extends State<CadastroForm> {
     'confirmarSenha': '',
     'usuario': '',
   };
+  final TextEditingController _searchController = TextEditingController(); // Necessário para Navbar
 
   String _mensagem = '';
 
@@ -105,7 +106,9 @@ class _CadastroFormState extends State<CadastroForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomNavbar(),
+      appBar: Navbar(
+        searchController: _searchController,
+      ),
       backgroundColor: const Color(0xFFE9E9E9),
       body: Center(
         child: SingleChildScrollView(

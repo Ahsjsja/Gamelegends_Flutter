@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'navbar.dart'; // Certifique-se de que o arquivo navbar.dart está no mesmo diretório
+import 'navbar.dart';
 
 class PaginaSuporte extends StatefulWidget {
   const PaginaSuporte({Key? key}) : super(key: key);
@@ -10,6 +10,7 @@ class PaginaSuporte extends StatefulWidget {
 
 class _PaginaSuporteState extends State<PaginaSuporte> {
   bool menuAberto = false;
+  final TextEditingController _searchController = TextEditingController();
   Map<String, String> formData = {
     'email': "",
     'usuario': ""
@@ -57,231 +58,189 @@ class _PaginaSuporteState extends State<PaginaSuporte> {
 
   @override
   Widget build(BuildContext context) {
+    final isWide = MediaQuery.of(context).size.width > 900;
+
     return Scaffold(
       backgroundColor: const Color(0xFFE9E9E9),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF90017F),
-        elevation: 0,
-        title: Row(
-          children: [
-            GestureDetector(
-              onTap: () => Navigator.pushNamed(context, "/"),
-              child: Image.asset(
-                'assets/logo.site.tcc.png',
-                height: 44,
-                fit: BoxFit.contain,
-              ),
-            ),
-            
-            const Spacer(),
-            // Botões de navegação
-            ...[
-              {"label": "Início", "route": "/Index", "icon": Icons.home},
-              {"label": "Games", "route": "/", "icon": Icons.videogame_asset},
-              {"label": "Sobre", "route": "/Que", "icon": Icons.help},
-              {"label": "Suporte", "route": "/Suporte", "icon": Icons.headset_mic},
-            ].map((nav) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: TextButton.icon(
-                    style: TextButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        textStyle: const TextStyle(fontSize: 16)),
-                    onPressed: () => Navigator.pushNamed(
-                        context, nav["route"] as String),
-                    icon: Icon(nav["icon"] as IconData, size: 18),
-                    label: Text(nav["label"] as String),
-                  ),
-                )),
-            const SizedBox(width: 8),
-            if (formData["usuario"] != null && formData["usuario"]!.isNotEmpty)
-              TextButton.icon(
-                onPressed: () {
-                  Navigator.pushNamed(
-                      context, '/Perfil?tipo=${formData["usuario"]}');
-                },
-                icon: const Icon(Icons.account_circle, color: Colors.white),
-                label: Text(
-                  "Perfil (${formData["usuario"]})",
-                  style: const TextStyle(color: Colors.white),
-                ),
-              )
-            else ...[
-              TextButton(
-                onPressed: () => Navigator.pushNamed(context, '/Login'),
-                child: const Text("Login", style: TextStyle(color: Colors.white)),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pushNamed(context, '/Cadastro'),
-                child: const Text("Registre-se", style: TextStyle(color: Colors.white)),
-              ),
-            ]
-          ],
-        ),
+      appBar: Navbar(
+        isMenuOpen: menuAberto,
+        onMenuTap: () => setState(() => menuAberto = !menuAberto),
+        searchController: _searchController,
       ),
-      body: ListView(
+      body: Stack(
         children: [
-          // FAQ Section
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 0),
-            color: Colors.white,
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 720),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 12),
-                    const Text(
-                      "Perguntas Frequentes",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        color: Color(0xFF90017F),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    ...faqData.map((faq) => FAQItem(
-                          question: faq["question"]!,
-                          answer: faq["answer"]!,
-                        )),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          // Footer
-          Container(
-            color: const Color(0xFF90017F),
-            padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 0),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Sobre
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 32),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "Game",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(text: "Legends"),
-                                ],
-                              ),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 26,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              "Game Legends é uma plataforma dedicada a jogos indie, fornecendo uma maneira fácil para desenvolvedores distribuírem seus jogos e para jogadores descobrirem novas experiências.",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              children: const [
-                                Icon(Icons.phone, color: Colors.white70, size: 18),
-                                SizedBox(width: 6),
-                                Text(
-                                  "(99) 99999-9999",
-                                  style: TextStyle(color: Colors.white70),
-                                ),
-                                SizedBox(width: 18),
-                                Icon(Icons.email, color: Colors.white70, size: 18),
-                                SizedBox(width: 6),
-                                Text(
-                                  "info@gamelegends.com",
-                                  style: TextStyle(color: Colors.white70),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 18),
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.facebook, color: Colors.white),
-                                  onPressed: () {},
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.camera_alt, color: Colors.white),
-                                  onPressed: () {},
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.alternate_email, color: Colors.white),
-                                  onPressed: () {},
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.business, color: Colors.white),
-                                  onPressed: () {},
-                                ),
-                              ],
-                            ),
-                          ],
+          ListView(
+            children: [
+              // FAQ Section
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 0),
+                color: Colors.white,
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 720),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 12),
+                        const Text(
+                          "Perguntas Frequentes",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            color: Color(0xFF90017F),
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: 24),
+                        ...faqData.map((faq) => FAQItem(
+                              question: faq["question"]!,
+                              answer: faq["answer"]!,
+                            )),
+                      ],
                     ),
-                    // Links rápidos
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("Links Rápidos",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18)),
-                          const SizedBox(height: 10),
-                          ...[
-                            "Eventos",
-                            "Equipe",
-                            "Missão",
-                            "Serviços",
-                            "Afiliados"
-                          ].map((txt) => Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 2),
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: Text(
-                                    txt,
-                                    style: const TextStyle(
-                                        color: Colors.white70, fontSize: 15),
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            color: const Color(0xFF90017F),
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: const Center(
-              child: Text(
-                "© gamelegends.com | Feito pelo time do Game Legends",
-                style: TextStyle(color: Colors.white70),
+              // Footer
+              Container(
+                color: const Color(0xFF90017F),
+                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 0),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 1200),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Sobre
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 32),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Game",
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(text: "Legends"),
+                                    ],
+                                  ),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 26,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  "Game Legends é uma plataforma dedicada a jogos indie, fornecendo uma maneira fácil para desenvolvedores distribuírem seus jogos e para jogadores descobrirem novas experiências.",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  children: const [
+                                    Icon(Icons.phone, color: Colors.white70, size: 18),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      "(99) 99999-9999",
+                                      style: TextStyle(color: Colors.white70),
+                                    ),
+                                    SizedBox(width: 18),
+                                    Icon(Icons.email, color: Colors.white70, size: 18),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      "info@gamelegends.com",
+                                      style: TextStyle(color: Colors.white70),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 18),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.facebook, color: Colors.white),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.camera_alt, color: Colors.white),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.alternate_email, color: Colors.white),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.business, color: Colors.white),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Links rápidos
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Links Rápidos",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18)),
+                              const SizedBox(height: 10),
+                              ...[
+                                "Eventos",
+                                "Equipe",
+                                "Missão",
+                                "Serviços",
+                                "Afiliados"
+                              ].map((txt) => Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 2),
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Text(
+                                        txt,
+                                        style: const TextStyle(
+                                            color: Colors.white70, fontSize: 15),
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
+              Container(
+                width: double.infinity,
+                color: const Color(0xFF90017F),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: const Center(
+                  child: Text(
+                    "© gamelegends.com | Feito pelo time do Game Legends",
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                ),
+              ),
+            ],
           ),
+          // Mobile menu overlay
+          if (!isWide && menuAberto)
+            NavbarMobileMenu(
+              closeMenu: () => setState(() => menuAberto = false),
+              searchController: _searchController,
+            ),
         ],
       ),
     );
