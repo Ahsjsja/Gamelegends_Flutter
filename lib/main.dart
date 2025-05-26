@@ -13,6 +13,8 @@ import 'desenvolvido.dart';
 import 'educacional.dart';
 import 'esporte.dart';
 import 'essasemana.dart';
+import 'essemes.dart';
+import 'hoje.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +43,8 @@ class MyApp extends StatelessWidget {
         '/essasemana': (context) => EssasemanaPage(),
         '/educacional': (context) => EducacionalPage(),
         '/esporte': (context) => EsportePage(),
+        '/essemes': (context) => EsseMesPage(),
+        '/hoje': (context) => HojePage(),
 
         // Exemplo extra:
         // '/descricao': (context) => const TelaDescricao(),
