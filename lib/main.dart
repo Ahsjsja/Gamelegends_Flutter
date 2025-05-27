@@ -16,7 +16,7 @@ import 'essaSemana.dart';
 import 'esseMes.dart';
 import 'hoje.dart';
 import 'MacOs.dart';
-import 'iOs.dart';
+import 'iOS.dart';
 import 'sobrevivencia.dart';
 import 'terror.dart';
 import 'windows.dart';
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         '/esporte': (context) => EsportePage(),
         '/esseMes': (context) => EsseMesPage(),
         '/hoje': (context) => HojePage(),
-        '/iOs': (context) => IosPage(),
+        '/iOS': (context) => IosPage(),
         '/macOs': (context) => MacOsPage(),
         '/sobrevivencia': (context) => SobrevivenciaPage(),
         '/terror': (context) => TerrorPage(),
