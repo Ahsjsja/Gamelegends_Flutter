@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
 import 'navbar.dart';
 
-// Lista dos jogos para a categoria "Hoje" (imagens devem estar em assets e declaradas no pubspec.yaml)
-final _hojeGames = [
+// Lista dos jogos para a categoria "Terror" (imagens devem estar em assets e declaradas no pubspec.yaml)
+final _terrorGames = [
   {
-    "img": "assets/gold.png",
-    "name": "Gold of skils",
+    "img": "assets/tomate.png",
+    "name": "Elevator Hitch",
   },
   {
-    "img": "assets/self.png",
-    "name": "Self Redemption of mental",
+    "img": "assets/melancia.png",
+    "name": "Elevated Dread",
   },
   {
-    "img": "assets/kiddo.png",
-    "name": "Kiddo",
+    "img": "assets/uva.png",
+    "name": "Pumpkin Panic",
   },
   {
-    "img": "assets/kama.png",
-    "name": "Kamaeru",
+    "img": "assets/salada.png",
+    "name": "They are here",
+  },
+  {
+    "img": "assets/tangerina.png",
+    "name": "The Vale",
+  },
+  {
+    "img": "assets/tamara.png",
+    "name": "Clap Clap",
   },
 ];
 
-class HojePage extends StatefulWidget {
-  const HojePage({Key? key}) : super(key: key);
+class TerrorPage extends StatefulWidget {
+  const TerrorPage({Key? key}) : super(key: key);
 
   @override
-  State<HojePage> createState() => _HojePageState();
+  State<TerrorPage> createState() => _TerrorPageState();
 }
 
-class _HojePageState extends State<HojePage> {
+class _TerrorPageState extends State<TerrorPage> {
   final TextEditingController _searchController = TextEditingController();
   bool menuAberto = false;
   bool isMobileOpen = false;
@@ -158,9 +166,9 @@ class _HojePageState extends State<HojePage> {
                             crossAxisSpacing: 16,
                             childAspectRatio: 0.8,
                           ),
-                          itemCount: _hojeGames.length,
+                          itemCount: _terrorGames.length,
                           itemBuilder: (context, index) {
-                            final produto = _hojeGames[index];
+                            final produto = _terrorGames[index];
                             return _GameCard(
                               nome: produto['name']!,
                               imageAsset: produto['img']!,

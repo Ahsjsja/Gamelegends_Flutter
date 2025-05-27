@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
 import 'navbar.dart';
 
-// Lista dos jogos para a categoria "Hoje" (imagens devem estar em assets e declaradas no pubspec.yaml)
-final _hojeGames = [
+// Lista dos jogos para a categoria "Windows" (imagens devem estar em assets e declaradas no pubspec.yaml)
+final _windowsGames = [
   {
-    "img": "assets/gold.png",
-    "name": "Gold of skils",
+    "img": "assets/cato.png",
+    "name": "Happy Cat Tavern",
   },
   {
-    "img": "assets/self.png",
-    "name": "Self Redemption of mental",
+    "img": "assets/pombo.png",
+    "name": "Subida de pomba",
   },
   {
-    "img": "assets/kiddo.png",
-    "name": "Kiddo",
+    "img": "assets/limao.png",
+    "name": "Hero's Hour",
   },
   {
-    "img": "assets/kama.png",
-    "name": "Kamaeru",
+    "img": "assets/goiaba.png",
+    "name": "Bug Fables",
+  },
+  {
+    "img": "assets/diaba.png",
+    "name": "Hedon Bloodrite",
+  },
+  {
+    "img": "assets/marquin.png",
+    "name": "Buck up and drive",
   },
 ];
 
-class HojePage extends StatefulWidget {
-  const HojePage({Key? key}) : super(key: key);
+class WindowsPage extends StatefulWidget {
+  const WindowsPage({Key? key}) : super(key: key);
 
   @override
-  State<HojePage> createState() => _HojePageState();
+  State<WindowsPage> createState() => _WindowsPageState();
 }
 
-class _HojePageState extends State<HojePage> {
+class _WindowsPageState extends State<WindowsPage> {
   final TextEditingController _searchController = TextEditingController();
   bool menuAberto = false;
   bool isMobileOpen = false;
@@ -158,9 +166,9 @@ class _HojePageState extends State<HojePage> {
                             crossAxisSpacing: 16,
                             childAspectRatio: 0.8,
                           ),
-                          itemCount: _hojeGames.length,
+                          itemCount: _windowsGames.length,
                           itemBuilder: (context, index) {
-                            final produto = _hojeGames[index];
+                            final produto = _windowsGames[index];
                             return _GameCard(
                               nome: produto['name']!,
                               imageAsset: produto['img']!,

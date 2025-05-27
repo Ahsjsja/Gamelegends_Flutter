@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
 import 'navbar.dart';
 
-// Lista dos jogos para a categoria "Hoje" (imagens devem estar em assets e declaradas no pubspec.yaml)
-final _hojeGames = [
+// Lista dos jogos para a categoria "iOS" (imagens devem estar em assets e declaradas no pubspec.yaml)
+final _iosGames = [
   {
-    "img": "assets/gold.png",
-    "name": "Gold of skils",
+    "img": "assets/morticia.png",
+    "name": "Mortician's Tale",
   },
   {
-    "img": "assets/self.png",
-    "name": "Self Redemption of mental",
+    "img": "assets/city.png",
+    "name": "CityGlitch",
   },
   {
-    "img": "assets/kiddo.png",
-    "name": "Kiddo",
+    "img": "assets/gladia.png",
+    "name": "Gladiabots",
   },
   {
-    "img": "assets/kama.png",
-    "name": "Kamaeru",
+    "img": "assets/ceu.png",
+    "name": "Até a borda do Céu",
+  },
+  {
+    "img": "assets/sixit.png",
+    "name": "Sixit",
+  },
+  {
+    "img": "assets/imost.png",
+    "name": "Inmost",
   },
 ];
 
-class HojePage extends StatefulWidget {
-  const HojePage({Key? key}) : super(key: key);
+class IosPage extends StatefulWidget {
+  const IosPage({Key? key}) : super(key: key);
 
   @override
-  State<HojePage> createState() => _HojePageState();
+  State<IosPage> createState() => _IosPageState();
 }
 
-class _HojePageState extends State<HojePage> {
+class _IosPageState extends State<IosPage> {
   final TextEditingController _searchController = TextEditingController();
   bool menuAberto = false;
   bool isMobileOpen = false;
@@ -158,9 +166,9 @@ class _HojePageState extends State<HojePage> {
                             crossAxisSpacing: 16,
                             childAspectRatio: 0.8,
                           ),
-                          itemCount: _hojeGames.length,
+                          itemCount: _iosGames.length,
                           itemBuilder: (context, index) {
-                            final produto = _hojeGames[index];
+                            final produto = _iosGames[index];
                             return _GameCard(
                               nome: produto['name']!,
                               imageAsset: produto['img']!,

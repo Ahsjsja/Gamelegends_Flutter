@@ -12,9 +12,14 @@ import 'desenvolvendo.dart';
 import 'desenvolvido.dart';
 import 'educacional.dart';
 import 'esporte.dart';
-import 'essasemana.dart';
-import 'essemes.dart';
+import 'essaSemana.dart';
+import 'esseMes.dart';
 import 'hoje.dart';
+import 'MacOs.dart';
+import 'iOs.dart';
+import 'sobrevivencia.dart';
+import 'terror.dart';
+import 'windows.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,11 +45,16 @@ class MyApp extends StatelessWidget {
         '/aventura': (context) => AventuraPage(),
         '/desenvolvendo': (context) => DesenvolvendoPage(),
         '/desenvolvido': (context) => DesenvolvidoPage(),
-        '/essasemana': (context) => EssasemanaPage(),
+        '/essaSemana': (context) => EssasemanaPage(),
         '/educacional': (context) => EducacionalPage(),
         '/esporte': (context) => EsportePage(),
-        '/essemes': (context) => EsseMesPage(),
+        '/esseMes': (context) => EsseMesPage(),
         '/hoje': (context) => HojePage(),
+        '/iOs': (context) => IosPage(),
+        '/macOs': (context) => MacOsPage(),
+        '/sobrevivencia': (context) => SobrevivenciaPage(),
+        '/terror': (context) => TerrorPage(),
+        '/windows': (context) => WindowsPage(),
 
         // Exemplo extra:
         // '/descricao': (context) => const TelaDescricao(),

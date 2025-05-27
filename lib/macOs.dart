@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
 import 'navbar.dart';
 
-// Lista dos jogos para a categoria "Hoje" (imagens devem estar em assets e declaradas no pubspec.yaml)
-final _hojeGames = [
+// Lista dos jogos para a categoria "Mac OS" (imagens devem estar em assets e declaradas no pubspec.yaml)
+final _macosGames = [
   {
-    "img": "assets/gold.png",
-    "name": "Gold of skils",
+    "img": "assets/ourlife.png",
+    "name": "Our Life",
   },
   {
-    "img": "assets/self.png",
-    "name": "Self Redemption of mental",
+    "img": "assets/futebol.png",
+    "name": "Football Drama",
   },
   {
-    "img": "assets/kiddo.png",
-    "name": "Kiddo",
+    "img": "assets/banana.png",
+    "name": "Prose e Codes",
   },
   {
-    "img": "assets/kama.png",
-    "name": "Kamaeru",
+    "img": "assets/manga.png",
+    "name": "Skate Bird",
+  },
+  {
+    "img": "assets/img2.png",
+    "name": "Lumiterra",
+  },
+  {
+    "img": "assets/img6.png",
+    "name": "Lil tribals",
   },
 ];
 
-class HojePage extends StatefulWidget {
-  const HojePage({Key? key}) : super(key: key);
+class MacOsPage extends StatefulWidget {
+  const MacOsPage({Key? key}) : super(key: key);
 
   @override
-  State<HojePage> createState() => _HojePageState();
+  State<MacOsPage> createState() => _MacOsPageState();
 }
 
-class _HojePageState extends State<HojePage> {
+class _MacOsPageState extends State<MacOsPage> {
   final TextEditingController _searchController = TextEditingController();
   bool menuAberto = false;
   bool isMobileOpen = false;
@@ -158,9 +166,9 @@ class _HojePageState extends State<HojePage> {
                             crossAxisSpacing: 16,
                             childAspectRatio: 0.8,
                           ),
-                          itemCount: _hojeGames.length,
+                          itemCount: _macosGames.length,
                           itemBuilder: (context, index) {
-                            final produto = _hojeGames[index];
+                            final produto = _macosGames[index];
                             return _GameCard(
                               nome: produto['name']!,
                               imageAsset: produto['img']!,
