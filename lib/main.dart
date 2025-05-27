@@ -20,6 +20,10 @@ import 'iOS.dart';
 import 'sobrevivencia.dart';
 import 'terror.dart';
 import 'windows.dart';
+import 'codin.dart';
+import 'mandaremail.dart';
+import 'redefinir.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -55,6 +59,9 @@ class MyApp extends StatelessWidget {
         '/sobrevivencia': (context) => SobrevivenciaPage(),
         '/terror': (context) => TerrorPage(),
         '/windows': (context) => WindowsPage(),
+        '/mandaremail': (context) => PaginaMandarEmail(),
+        '/codin': (context) => PaginaCodin(),
+        '/redefinir': (context) => PaginaRedefinirSenha(),
 
         // Exemplo extra:
         // '/descricao': (context) => const TelaDescricao(),
@@ -322,22 +329,25 @@ class _MainPrincipalState extends State<MainPrincipal> {
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      Text(
-                                                        item['name'] ?? '',
-                                                        style: const TextStyle(
+                                                      AnimatedDefaultTextStyle(
+                                                        duration: const Duration(milliseconds: 180),
+                                                        style: TextStyle(
                                                           fontWeight: FontWeight.bold,
-                                                          fontSize: 20,
-                                                          color: Color(0xFF90017F),
+                                                          fontSize: isFocused ? 20 : 18,
+                                                          color: const Color(0xFF90017F),
                                                         ),
+                                                        child: Text(item['name'] ?? ''),
                                                       ),
                                                       const SizedBox(height: 6),
-                                                      Text(
-                                                        item['descricao'] ?? '',
-                                                        style: const TextStyle(
-                                                          fontSize: 15,
+                                                      AnimatedDefaultTextStyle(
+                                                        duration: const Duration(milliseconds: 180),
+                                                        style: TextStyle(
+                                                          fontSize: isFocused ? 12 : 12,
                                                           color: Colors.black87,
                                                         ),
+                                                        child: Text(item['descricao'] ?? ''),
                                                       ),
+ 
                                                       const SizedBox(height: 10),
                                                       GestureDetector(
                                                         onTap: () {
