@@ -23,7 +23,7 @@ import 'windows.dart';
 import 'codin.dart';
 import 'mandaremail.dart';
 import 'redefinir.dart';
-
+import 'perfil.dart';
 
 void main() {
   runApp(const MyApp());
@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
         '/mandaremail': (context) => PaginaMandarEmail(),
         '/codin': (context) => PaginaCodin(),
         '/redefinir': (context) => PaginaRedefinirSenha(),
+        '/perfil': (context) => PaginaPerfil(),
 
         // Exemplo extra:
         // '/descricao': (context) => const TelaDescricao(),

@@ -1,6 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Navbar extends StatelessWidget implements PreferredSizeWidget {
+// Função para obter usuário logado do "banco" (SharedPreferences)
+Future<Map<String, dynamic>?> getUsuarioLogado() async {
+  final prefs = await SharedPreferences.getInstance();
+  final tipo = prefs.getString('usuario_tipo'); // "Cliente", "ADM", "Desenvolvedor", etc
+  if (tipo == null) return null;
+  return {"usuario": tipo};
+}
+
+// Para simular cadastro/login (chame após login/cadastro com sucesso)
+Future<void> salvarUsuarioLogado(String tipo) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('usuario_tipo', tipo); // Ex: "Cliente" ou "ADM" ou "Desenvolvedor"
+}
+
+// Para simular logout
+Future<void> removerUsuarioLogado() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove('usuario_tipo');
+}
+
+class Navbar extends StatefulWidget implements PreferredSizeWidget {
   final VoidCallback? onMenuTap;
   final bool isMenuOpen;
   final TextEditingController searchController;
@@ -11,6 +32,33 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
     this.isMenuOpen = false,
     required this.searchController,
   }) : super(key: key);
+
+  @override
+  State<Navbar> createState() => _NavbarState();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(70);
+}
+
+class _NavbarState extends State<Navbar> {
+  Map<String, dynamic>? usuarioLogado;
+  bool carregandoUsuario = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarUsuario();
+  }
+
+  Future<void> _carregarUsuario() async {
+    final usuario = await getUsuarioLogado();
+    if (mounted) {
+      setState(() {
+        usuarioLogado = usuario;
+        carregandoUsuario = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +111,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                     SizedBox(
                       width: 220,
                       child: TextField(
-                        controller: searchController,
+                        controller: widget.searchController,
                         style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           hintText: 'Pesquisar Jogos, Tags ou Criadores',
@@ -77,36 +125,60 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.search, color: Color(0xFF90017F)),
-                            onPressed: () {
-                              // Implementar busca
-                            },
+                            onPressed: () {},
                           ),
                         ),
-                        onSubmitted: (q) {
-                          // Implementar busca
-                        },
+                        onSubmitted: (q) {},
                       ),
                     ),
                     const SizedBox(width: 12),
-                    TextButton(
-                      onPressed: () => Navigator.pushNamed(context, '/login'),
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFF780069),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                    if (carregandoUsuario)
+                      const SizedBox(
+                        width: 90,
+                        child: Center(
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        ),
+                      )
+                    else if (usuarioLogado != null &&
+                        usuarioLogado!["usuario"] != null &&
+                        usuarioLogado!["usuario"].toString().isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12),
+                        child: TextButton.icon(
+                          onPressed: () => Navigator.pushNamed(context, '/perfil'),
+                          style: TextButton.styleFrom(
+                            backgroundColor: const Color(0xFF780069),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          ),
+                          icon: const Icon(Icons.account_circle, color: Colors.white),
+                          label: Text(
+                            'Perfil (${usuarioLogado!["usuario"]})',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      )
+                    else ...[
+                      TextButton(
+                        onPressed: () => Navigator.pushNamed(context, '/login'),
+                        style: TextButton.styleFrom(
+                          backgroundColor: const Color(0xFF780069),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                        ),
+                        child: const Text('Login', style: TextStyle(color: Colors.white)),
                       ),
-                      child: const Text('Login', style: TextStyle(color: Colors.white)),
-                    ),
-                    const SizedBox(width: 8),
-                    TextButton(
-                      onPressed: () => Navigator.pushNamed(context, '/cadastro'),
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFF780069),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                      const SizedBox(width: 8),
+                      TextButton(
+                        onPressed: () => Navigator.pushNamed(context, '/cadastro'),
+                        style: TextButton.styleFrom(
+                          backgroundColor: const Color(0xFF780069),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                        ),
+                        child: const Text('Registre-se', style: TextStyle(color: Colors.white)),
                       ),
-                      child: const Text('Registre-se', style: TextStyle(color: Colors.white)),
-                    ),
+                    ],
                   ],
                 ),
               ),
@@ -114,8 +186,8 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
               Row(
                 children: [
                   IconButton(
-                    icon: Icon(isMenuOpen ? Icons.close : Icons.menu, color: Colors.white),
-                    onPressed: onMenuTap,
+                    icon: Icon(widget.isMenuOpen ? Icons.close : Icons.menu, color: Colors.white),
+                    onPressed: widget.onMenuTap,
                   ),
                 ],
               ),
@@ -124,13 +196,10 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(70);
 }
 
 // Use este widget no corpo do seu Scaffold para mostrar o menu mobile!
-class NavbarMobileMenu extends StatelessWidget {
+class NavbarMobileMenu extends StatefulWidget {
   final VoidCallback closeMenu;
   final TextEditingController searchController;
 
@@ -139,6 +208,30 @@ class NavbarMobileMenu extends StatelessWidget {
     required this.closeMenu,
     required this.searchController,
   }) : super(key: key);
+
+  @override
+  State<NavbarMobileMenu> createState() => _NavbarMobileMenuState();
+}
+
+class _NavbarMobileMenuState extends State<NavbarMobileMenu> {
+  Map<String, dynamic>? usuarioLogado;
+  bool carregandoUsuario = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarUsuario();
+  }
+
+  Future<void> _carregarUsuario() async {
+    final usuario = await getUsuarioLogado();
+    if (mounted) {
+      setState(() {
+        usuarioLogado = usuario;
+        carregandoUsuario = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +245,7 @@ class NavbarMobileMenu extends StatelessWidget {
         child: Stack(
           children: [
             GestureDetector(
-              onTap: closeMenu,
+              onTap: widget.closeMenu,
               child: Container(
                 color: Colors.black26,
               ),
@@ -179,7 +272,7 @@ class NavbarMobileMenu extends StatelessWidget {
                         icon: Icons.home,
                         text: 'Início',
                         onTap: () {
-                          closeMenu();
+                          widget.closeMenu();
                           Navigator.pushNamed(context, '/');
                         },
                       ),
@@ -187,7 +280,7 @@ class NavbarMobileMenu extends StatelessWidget {
                         icon: Icons.videogame_asset,
                         text: 'Games',
                         onTap: () {
-                          closeMenu();
+                          widget.closeMenu();
                           Navigator.pushNamed(context, '/index');
                         },
                       ),
@@ -195,7 +288,7 @@ class NavbarMobileMenu extends StatelessWidget {
                         icon: Icons.help_outline,
                         text: 'Sobre',
                         onTap: () {
-                          closeMenu();
+                          widget.closeMenu();
                           Navigator.pushNamed(context, '/que');
                         },
                       ),
@@ -203,14 +296,14 @@ class NavbarMobileMenu extends StatelessWidget {
                         icon: Icons.headset_mic,
                         text: 'Suporte',
                         onTap: () {
-                          closeMenu();
+                          widget.closeMenu();
                           Navigator.pushNamed(context, '/suporte');
                         },
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                         child: TextField(
-                          controller: searchController,
+                          controller: widget.searchController,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             hintText: 'Pesquisar Jogos, Tags ou Criadores',
@@ -237,31 +330,61 @@ class NavbarMobileMenu extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          TextButton(
-                            onPressed: () {
-                              closeMenu();
-                              Navigator.pushNamed(context, '/login');
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: const Color(0xFF780069),
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          if (carregandoUsuario)
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                              ),
+                            )
+                          else if (usuarioLogado != null &&
+                              usuarioLogado!["usuario"] != null &&
+                              usuarioLogado!["usuario"].toString().isNotEmpty)
+                            TextButton.icon(
+                              onPressed: () {
+                                widget.closeMenu();
+                                Navigator.pushNamed(context, '/perfil');
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: const Color(0xFF780069),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                              ),
+                              icon: const Icon(Icons.account_circle, color: Colors.white),
+                              label: Text(
+                                'Perfil (${usuarioLogado!["usuario"]})',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            )
+                          else ...[
+                            TextButton(
+                              onPressed: () {
+                                widget.closeMenu();
+                                Navigator.pushNamed(context, '/login');
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: const Color(0xFF780069),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                              ),
+                              child: const Text('Login', style: TextStyle(color: Colors.white)),
                             ),
-                            child: const Text('Login', style: TextStyle(color: Colors.white)),
-                          ),
-                          const SizedBox(width: 8),
-                          TextButton(
-                            onPressed: () {
-                              closeMenu();
-                              Navigator.pushNamed(context, '/cadastro');
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: const Color(0xFF780069),
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                            const SizedBox(width: 8),
+                            TextButton(
+                              onPressed: () {
+                                widget.closeMenu();
+                                Navigator.pushNamed(context, '/cadastro');
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: const Color(0xFF780069),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                              ),
+                              child: const Text('Registre-se', style: TextStyle(color: Colors.white)),
                             ),
-                            child: const Text('Registre-se', style: TextStyle(color: Colors.white)),
-                          ),
+                          ],
                         ],
                       ),
                     ],

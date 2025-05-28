@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class PaginaLogin extends StatefulWidget {
   @override
@@ -10,12 +13,12 @@ class _PaginaLoginState extends State<PaginaLogin> {
   final TextEditingController senhaController = TextEditingController();
   String? errorMessage;
   bool menuAberto = false;
+  bool loading = false;
 
   void handleLogin() async {
-    final email = emailController.text;
+    final email = emailController.text.trim();
     final senha = senhaController.text;
 
-    // Regex para validar o formato do email
     final emailRegex =
         RegExp(r'^[a-zA-Z0-9._%+-]+@(yahoo|gmail|email)\.com(\.br)?$');
     if (!emailRegex.hasMatch(email)) {
@@ -26,13 +29,38 @@ class _PaginaLoginState extends State<PaginaLogin> {
       return;
     }
 
+    setState(() {
+      loading = true;
+      errorMessage = null;
+    });
+
     try {
-      // Simulando uma requisição de login
-      if (email == "exemplo@gmail.com" && senha == "senha123") {
+      final response = await http.post(
+        Uri.parse("http://localhost:8080/login"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "email": email,
+          "senha": senha,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Parse o JSON
+        final userMap = jsonDecode(response.body);
+
+        // Salva tudo do usuário no SharedPreferences (como string)
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('usuario', jsonEncode(userMap));
+        // Salve também o tipo para facilitar o Navbar
+        if (userMap["usuario"] != null) {
+          await prefs.setString('usuario_tipo', userMap["usuario"]);
+        }
+
         setState(() {
           errorMessage = null;
         });
-        // Navegar para a página principal
+        // Navega para a página principal
+        if (!mounted) return;
         Navigator.pushReplacementNamed(context, '/');
       } else {
         setState(() {
@@ -43,7 +71,10 @@ class _PaginaLoginState extends State<PaginaLogin> {
       setState(() {
         errorMessage = "Ocorreu um erro. Tente novamente.";
       });
-      print(error);
+    } finally {
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -164,20 +195,24 @@ class _PaginaLoginState extends State<PaginaLogin> {
                           ),
                         ),
                       SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: handleLogin,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF90017F),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 10,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        child: Text("LOGIN"),
-                      ),
+                      loading
+                          ? CircularProgressIndicator(
+                              color: Color(0xFF90017F),
+                            )
+                          : ElevatedButton(
+                              onPressed: handleLogin,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF90017F),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 40,
+                                  vertical: 10,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                              ),
+                              child: Text("LOGIN"),
+                            ),
                       TextButton(
                         onPressed: () =>
                             Navigator.pushNamed(context, '/cadastro'),
@@ -185,7 +220,7 @@ class _PaginaLoginState extends State<PaginaLogin> {
                       ),
                       TextButton(
                         onPressed: () =>
-                            Navigator.pushNamed(context, '/mandarEmail'),
+                            Navigator.pushNamed(context, '/mandaremail'),
                         child: Text("Esqueceu a senha? Redefinir senha"),
                       ),
                     ],
