@@ -28,7 +28,7 @@ class _PaginaCodinState extends State<PaginaCodin> {
 
   void _confirmar() {
     // Aqui você pode validar o código ou fazer qualquer lógica
-    Navigator.pushNamed(context, '/RedefinirSenha');
+    Navigator.pushNamed(context, '/redefinir');
   }
 
   @override

@@ -1,39 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-// ---- Simulação de localStorage e API para testar no Flutter Desktop/Mobile ----
-Future<Map<String, dynamic>?> fakeLocalStorageGet(String key) async {
-  // Simule recuperando dados, use shared_preferences no app real
-  // Exemplo simulado:
-  if (key == 'usuario') {
-    return {
-      "nome": "João da Silva",
-      "cpf": "123.456.789-00",
-      "datanascimento": "1990-03-10",
-      "email": "joao@example.com",
-      "telefone": "(11) 99999-8888",
-      "usuario": "Desenvolvedor",
-      "id": 1,
-    };
-  }
-  return null;
-}
-
-Future<void> fakeLocalStorageSet(String key, Map<String, dynamic> value) async {
-  // Simule salvando dados, use shared_preferences no app real
-}
-
-Future<void> fakeLocalStorageRemove(String key) async {
-  // Simule removendo dados, use shared_preferences no app real
-}
-
-Future<bool> fakeDeleteProfile(dynamic idUsuario) async {
-  // Simule a exclusão do usuário, sempre retorna sucesso
-  await Future.delayed(const Duration(seconds: 1));
-  return true;
-}
-
-// ---- Widget principal ----
 class PaginaPerfil extends StatefulWidget {
   const PaginaPerfil({Key? key}) : super(key: key);
 
@@ -43,6 +12,7 @@ class PaginaPerfil extends StatefulWidget {
 
 class _PaginaPerfilState extends State<PaginaPerfil> {
   Map<String, dynamic> formData = {
+    "id": null,
     "nome": "",
     "cpf": "",
     "dataNascimento": null,
@@ -60,15 +30,42 @@ class _PaginaPerfilState extends State<PaginaPerfil> {
     _loadPerfil();
   }
 
+  // -------- BANCO DE DADOS (API) --------
+  Future<Map<String, dynamic>?> getUsuarioBanco() async {
+    // Pegue o ID do usuário logado de onde você armazena (ex: SharedPreferences, token, etc)
+    // Aqui está fixo como 1 só para exemplo
+    final userId = formData["id"] ?? 1;
+    final response = await http.get(Uri.parse('http://localhost:8080/usuario/$userId'));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    }
+    return null;
+  }
+
+  Future<void> updateUsuarioBanco(Map<String, dynamic> usuario) async {
+    await http.put(
+      Uri.parse('http://localhost:8080/usuario/${usuario["id"]}'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(usuario),
+    );
+  }
+
+  Future<void> deleteUsuarioBanco(int id) async {
+    await http.delete(
+      Uri.parse('http://localhost:8080/usuario/$id'),
+    );
+  }
+
+  // --------- FLUXO DE TELA ---------
   Future<void> _loadPerfil() async {
-    final usuarioDataStr = await fakeLocalStorageGet('usuario');
-    if (usuarioDataStr != null) {
-      final usuarioData = Map<String, dynamic>.from(usuarioDataStr);
+    final usuarioData = await getUsuarioBanco();
+    if (usuarioData != null) {
       setState(() {
         formData = {
+          "id": usuarioData["id"],
           "nome": usuarioData["nome"] ?? "",
           "cpf": usuarioData["cpf"] ?? "",
-          "dataNascimento": usuarioData["datanascimento"] ?? "",
+          "dataNascimento": usuarioData["datanascimento"] ?? usuarioData["dataNascimento"] ?? "",
           "email": usuarioData["email"] ?? "",
           "telefone": usuarioData["telefone"] ?? "",
           "usuario": usuarioData["usuario"] ?? "",
@@ -83,8 +80,7 @@ class _PaginaPerfilState extends State<PaginaPerfil> {
   }
 
   Future<void> _handleDelete() async {
-    final usuarioDataStr = await fakeLocalStorageGet('usuario');
-    final idUsuario = usuarioDataStr?['id'];
+    final idUsuario = formData["id"];
     if (idUsuario == null) {
       _showDialog("Erro: ID do usuário não encontrado.");
       return;
@@ -101,15 +97,10 @@ class _PaginaPerfilState extends State<PaginaPerfil> {
       ),
     );
     if (result == true) {
-      final ok = await fakeDeleteProfile(idUsuario);
-      if (ok) {
-        _showDialog("Perfil deletado com sucesso!", onClose: () {
-          fakeLocalStorageRemove('usuario');
-          Navigator.pushReplacementNamed(context, '/Login');
-        });
-      } else {
-        _showDialog("Erro ao deletar o perfil.");
-      }
+      await deleteUsuarioBanco(idUsuario);
+      _showDialog("Perfil deletado com sucesso!", onClose: () {
+        Navigator.pushReplacementNamed(context, '/Login');
+      });
     }
   }
 
@@ -120,21 +111,13 @@ class _PaginaPerfilState extends State<PaginaPerfil> {
   }
 
   Future<void> _handleSave(Map<String, dynamic> updatedData) async {
-    final usuarioDataStr = await fakeLocalStorageGet('usuario');
     final newUser = {
-      if (usuarioDataStr != null) ...usuarioDataStr,
+      ...formData,
       ...updatedData,
     };
-    await fakeLocalStorageSet('usuario', newUser);
+    await updateUsuarioBanco(newUser);
     setState(() {
-      formData = {
-        "nome": newUser["nome"],
-        "cpf": newUser["cpf"],
-        "dataNascimento": newUser["dataNascimento"],
-        "email": newUser["email"],
-        "telefone": newUser["telefone"],
-        "usuario": newUser["usuario"],
-      };
+      formData = newUser;
       modalVisible = false;
     });
     _showDialog("Perfil atualizado com sucesso!");
@@ -398,6 +381,10 @@ class PerfilInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text.rich(TextSpan(children: [
+          const TextSpan(text: "ID: ", style: TextStyle(fontWeight: FontWeight.bold)),
+          TextSpan(text: formData["id"]?.toString() ?? ""),
+        ])),
+        Text.rich(TextSpan(children: [
           const TextSpan(text: "Nome: ", style: TextStyle(fontWeight: FontWeight.bold)),
           TextSpan(text: formData["nome"] ?? ""),
         ])),
@@ -426,7 +413,7 @@ class PerfilInfo extends StatelessWidget {
   }
 }
 
-/// Modal para edição do perfil
+/// Modal para edição do perfil, requerendo o campo ID
 class PerfilModal extends StatefulWidget {
   final Map<String, dynamic> formData;
   final VoidCallback onClose;
@@ -443,6 +430,7 @@ class PerfilModal extends StatefulWidget {
 }
 
 class _PerfilModalState extends State<PerfilModal> {
+  late TextEditingController idCtrl;
   late TextEditingController nomeCtrl;
   late TextEditingController cpfCtrl;
   late TextEditingController dataNascCtrl;
@@ -452,6 +440,7 @@ class _PerfilModalState extends State<PerfilModal> {
   @override
   void initState() {
     super.initState();
+    idCtrl = TextEditingController(text: widget.formData["id"]?.toString() ?? "");
     nomeCtrl = TextEditingController(text: widget.formData["nome"]);
     cpfCtrl = TextEditingController(text: widget.formData["cpf"]);
     dataNascCtrl = TextEditingController(text: widget.formData["dataNascimento"] ?? "");
@@ -461,6 +450,7 @@ class _PerfilModalState extends State<PerfilModal> {
 
   @override
   void dispose() {
+    idCtrl.dispose();
     nomeCtrl.dispose();
     cpfCtrl.dispose();
     dataNascCtrl.dispose();
@@ -470,7 +460,14 @@ class _PerfilModalState extends State<PerfilModal> {
   }
 
   void _handleSubmit() {
+    final idText = idCtrl.text.trim();
     final dataNascimento = dataNascCtrl.text.trim();
+    if (idText.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("O campo ID é obrigatório."),
+      ));
+      return;
+    }
     // Validação simples da data
     try {
       if (dataNascimento.isEmpty) throw "A data de nascimento é obrigatória";
@@ -482,6 +479,7 @@ class _PerfilModalState extends State<PerfilModal> {
       return;
     }
     widget.onSave({
+      "id": int.tryParse(idText) ?? idText,
       "nome": nomeCtrl.text,
       "cpf": cpfCtrl.text,
       "dataNascimento": dataNascimento,
@@ -513,6 +511,7 @@ class _PerfilModalState extends State<PerfilModal> {
               children: [
                 const Text("Editar Perfil", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 const SizedBox(height: 16),
+                _inputField("ID", idCtrl, keyboardType: TextInputType.number, enabled: true),
                 _inputField("Nome", nomeCtrl),
                 _inputField("CPF", cpfCtrl),
                 _dateField("Data de Nascimento", dataNascCtrl),
@@ -541,7 +540,7 @@ class _PerfilModalState extends State<PerfilModal> {
     );
   }
 
-  Widget _inputField(String label, TextEditingController ctrl, {TextInputType keyboardType = TextInputType.text}) {
+  Widget _inputField(String label, TextEditingController ctrl, {TextInputType keyboardType = TextInputType.text, bool enabled = true}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: TextField(
@@ -552,6 +551,7 @@ class _PerfilModalState extends State<PerfilModal> {
           isDense: true,
         ),
         keyboardType: keyboardType,
+        enabled: enabled,
       ),
     );
   }

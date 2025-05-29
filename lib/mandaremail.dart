@@ -26,7 +26,7 @@ class _PaginaMandarEmailState extends State<PaginaMandarEmail> {
 
   void _mandarEmail() {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(context, '/MandarCodin');
+      Navigator.pushNamed(context, '/codin');
     }
   }
 
@@ -62,22 +62,22 @@ class _PaginaMandarEmailState extends State<PaginaMandarEmail> {
                   ListTile(
                     leading: const Icon(Icons.home),
                     title: const Text('Início'),
-                    onTap: () => Navigator.pushNamed(context, '/Index'),
+                    onTap: () => Navigator.pushNamed(context, '/'),
                   ),
                   ListTile(
                     leading: const Icon(Icons.videogame_asset),
                     title: const Text('Games'),
-                    onTap: () => Navigator.pushNamed(context, '/'),
+                    onTap: () => Navigator.pushNamed(context, '/index'),
                   ),
                   ListTile(
                     leading: const Icon(Icons.help),
                     title: const Text('Sobre'),
-                    onTap: () => Navigator.pushNamed(context, '/Que'),
+                    onTap: () => Navigator.pushNamed(context, '/que'),
                   ),
                   ListTile(
                     leading: const Icon(Icons.headset_mic),
                     title: const Text('Suporte'),
-                    onTap: () => Navigator.pushNamed(context, '/Suporte'),
+                    onTap: () => Navigator.pushNamed(context, '/suporte'),
                   ),
                 ],
               ),
@@ -109,11 +109,11 @@ class _PaginaMandarEmailState extends State<PaginaMandarEmail> {
                   ),
                   const SizedBox(width: 12),
                   TextButton(
-                    onPressed: () => Navigator.pushNamed(context, '/Login'),
+                    onPressed: () => Navigator.pushNamed(context, '/login'),
                     child: const Text("Login"),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pushNamed(context, '/Cadastro'),
+                    onPressed: () => Navigator.pushNamed(context, '/cadastro'),
                     child: const Text("Registre-se"),
                   ),
                 ],
@@ -202,7 +202,7 @@ class _PaginaMandarEmailState extends State<PaginaMandarEmail> {
                                     children: [
                                       const Text('Lembrou a senha? '),
                                       InkWell(
-                                        onTap: () => Navigator.pushNamed(context, '/Login'),
+                                        onTap: () => Navigator.pushNamed(context, '/login'),
                                         child: const Text(
                                           'Faça login',
                                           style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),

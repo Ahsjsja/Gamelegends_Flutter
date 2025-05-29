@@ -15,7 +15,7 @@ import 'esporte.dart';
 import 'essaSemana.dart';
 import 'esseMes.dart';
 import 'hoje.dart';
-import 'MacOs.dart';
+import 'macOs.dart';
 import 'iOS.dart';
 import 'sobrevivencia.dart';
 import 'terror.dart';
@@ -24,6 +24,7 @@ import 'codin.dart';
 import 'mandaremail.dart';
 import 'redefinir.dart';
 import 'perfil.dart';
+import 'descricao.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
         '/codin': (context) => PaginaCodin(),
         '/redefinir': (context) => PaginaRedefinirSenha(),
         '/perfil': (context) => PaginaPerfil(),
-
+        '/descricao': (context) => PaginaDescricao(),
         // Exemplo extra:
         // '/descricao': (context) => const TelaDescricao(),
       },

@@ -50,22 +50,22 @@ class _PaginaRedefinirSenhaState extends State<PaginaRedefinirSenha> {
                   ListTile(
                     leading: const Icon(Icons.home),
                     title: const Text('Início'),
-                    onTap: () => Navigator.pushNamed(context, '/Index'),
+                    onTap: () => Navigator.pushNamed(context, '/'),
                   ),
                   ListTile(
                     leading: const Icon(Icons.videogame_asset),
                     title: const Text('Games'),
-                    onTap: () => Navigator.pushNamed(context, '/'),
+                    onTap: () => Navigator.pushNamed(context, '/index'),
                   ),
                   ListTile(
                     leading: const Icon(Icons.help),
                     title: const Text('Sobre'),
-                    onTap: () => Navigator.pushNamed(context, '/Que'),
+                    onTap: () => Navigator.pushNamed(context, '/que'),
                   ),
                   ListTile(
                     leading: const Icon(Icons.headset_mic),
                     title: const Text('Suporte'),
-                    onTap: () => Navigator.pushNamed(context, '/Suporte'),
+                    onTap: () => Navigator.pushNamed(context, '/suporte'),
                   ),
                 ],
               ),
@@ -97,11 +97,11 @@ class _PaginaRedefinirSenhaState extends State<PaginaRedefinirSenha> {
                   ),
                   const SizedBox(width: 12),
                   TextButton(
-                    onPressed: () => Navigator.pushNamed(context, '/Login'),
+                    onPressed: () => Navigator.pushNamed(context, '/login'),
                     child: const Text("Login"),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pushNamed(context, '/Cadastro'),
+                    onPressed: () => Navigator.pushNamed(context, '/cadastro'),
                     child: const Text("Registre-se"),
                   ),
                 ],
@@ -160,7 +160,7 @@ class _PaginaRedefinirSenhaState extends State<PaginaRedefinirSenha> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: GestureDetector(
-                          onTap: () => Navigator.pushNamed(context, '/MandarCodin'),
+                          onTap: () => Navigator.pushNamed(context, '/codin'),
                           child: Image.asset(esquerda, height: 36),
                         ),
                       ),
@@ -327,7 +327,7 @@ class _RedefinirSenhaFormState extends State<_RedefinirSenhaForm> {
   void _onSubmit() {
     if (_formKey.currentState!.validate()) {
       // Aqui você pode fazer a lógica de redefinição de senha
-      Navigator.pushNamed(context, '/Login');
+      Navigator.pushNamed(context, '/login');
     }
   }
 
@@ -395,7 +395,7 @@ class _RedefinirSenhaFormState extends State<_RedefinirSenhaForm> {
             children: [
               const Text('Lembrou a senha? '),
               InkWell(
-                onTap: () => Navigator.pushNamed(context, '/Login'),
+                onTap: () => Navigator.pushNamed(context, '/login'),
                 child: const Text(
                   'Faça login',
                   style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),

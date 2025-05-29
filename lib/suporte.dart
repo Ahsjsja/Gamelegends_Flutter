@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'navbar.dart';
-
+ 
 class PaginaSuporte extends StatefulWidget {
   const PaginaSuporte({Key? key}) : super(key: key);
-
+ 
   @override
   State<PaginaSuporte> createState() => _PaginaSuporteState();
 }
-
+ 
 class _PaginaSuporteState extends State<PaginaSuporte> {
   bool menuAberto = false;
   final TextEditingController _searchController = TextEditingController();
@@ -15,7 +15,7 @@ class _PaginaSuporteState extends State<PaginaSuporte> {
     'email': "",
     'usuario': ""
   };
-
+ 
   // Simula FAQ
   final List<Map<String, String>> faqData = [
     {
@@ -44,7 +44,7 @@ class _PaginaSuporteState extends State<PaginaSuporte> {
           "Na página de cada jogo, você encontrará uma seção de avaliações onde poderá escrever sua opinião."
     },
   ];
-
+ 
   @override
   void initState() {
     super.initState();
@@ -55,11 +55,11 @@ class _PaginaSuporteState extends State<PaginaSuporte> {
       };
     });
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     final isWide = MediaQuery.of(context).size.width > 900;
-
+ 
     return Scaffold(
       backgroundColor: const Color(0xFFE9E9E9),
       appBar: Navbar(
@@ -101,127 +101,102 @@ class _PaginaSuporteState extends State<PaginaSuporte> {
                   ),
                 ),
               ),
-              // Footer
+              // Footer ajustado conforme a imagem
               Container(
                 color: const Color(0xFF90017F),
-                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 0),
+                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
                 child: Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 1200),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Sobre
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 32),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "Game",
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: "Legends"),
-                                    ],
-                                  ),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 26,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                const Text(
-                                  "Game Legends é uma plataforma dedicada a jogos indie, fornecendo uma maneira fácil para desenvolvedores distribuírem seus jogos e para jogadores descobrirem novas experiências.",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Row(
-                                  children: const [
-                                    Icon(Icons.phone, color: Colors.white70, size: 18),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      "(99) 99999-9999",
-                                      style: TextStyle(color: Colors.white70),
-                                    ),
-                                    SizedBox(width: 18),
-                                    Icon(Icons.email, color: Colors.white70, size: 18),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      "info@gamelegends.com",
-                                      style: TextStyle(color: Colors.white70),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 18),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.facebook, color: Colors.white),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.camera_alt, color: Colors.white),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.alternate_email, color: Colors.white),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.business, color: Colors.white),
-                                      onPressed: () {},
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                        // GameLegends
+                        const Text(
+                          "GameLegends",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        // Links rápidos
-                        Expanded(
-                          flex: 1,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text("Links Rápidos",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18)),
-                              const SizedBox(height: 10),
-                              ...[
-                                "Eventos",
-                                "Equipe",
-                                "Missão",
-                                "Serviços",
-                                "Afiliados"
-                              ].map((txt) => Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 2),
-                                    child: InkWell(
-                                      onTap: () {},
-                                      child: Text(
-                                        txt,
-                                        style: const TextStyle(
-                                            color: Colors.white70, fontSize: 15),
-                                      ),
-                                    ),
-                                  )),
-                            ],
+                        const SizedBox(height: 16),
+                       
+                        // Descrição
+                        const Text(
+                          "Game Legends é uma plataforma dedicada a jogos indie, fornecendo uma maneira fácil para desenvolvedores distribuírem seus jogos e para jogadores descobrirem novas experiências.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
                           ),
+                        ),
+                        const SizedBox(height: 16),
+                       
+                        // Contatos
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.phone, color: Colors.white70, size: 18),
+                            SizedBox(width: 6),
+                            Text(
+                              "(99) 99999-9999",
+                              style: TextStyle(color: Colors.white70),
+                            ),
+                            SizedBox(width: 16),
+                            Icon(Icons.email, color: Colors.white70, size: 18),
+                            SizedBox(width: 6),
+                            Text(
+                              "info@gamelegends.com",
+                              style: TextStyle(color: Colors.white70),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                       
+                        // Divisor
+                        Container(
+                          height: 1,
+                          color: Colors.white.withOpacity(0.3),
+                          margin: const EdgeInsets.symmetric(horizontal: 40),
+                        ),
+                        const SizedBox(height: 24),
+                       
+                        // Links Rápidos
+                        const Text(
+                          "Links Rápidos",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                       
+                        Column(
+                          children: [
+                            "Eventos",
+                            "Equipe",
+                            "Missão",
+                            "Serviços",
+                            "Afiliados"
+                          ].map((txt) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Text(
+                              txt,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 15,
+                              ),
+                            ),
+                          )).toList(),
                         ),
                       ],
                     ),
                   ),
                 ),
               ),
+              // Rodapé inferior
               Container(
                 width: double.infinity,
                 color: const Color(0xFF90017F),
@@ -246,21 +221,21 @@ class _PaginaSuporteState extends State<PaginaSuporte> {
     );
   }
 }
-
+ 
 // Widget FAQItem
 class FAQItem extends StatefulWidget {
   final String question;
   final String answer;
-
+ 
   const FAQItem({super.key, required this.question, required this.answer});
-
+ 
   @override
   State<FAQItem> createState() => _FAQItemState();
 }
-
+ 
 class _FAQItemState extends State<FAQItem> {
   bool isOpen = false;
-
+ 
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -301,3 +276,4 @@ class _FAQItemState extends State<FAQItem> {
     );
   }
 }
+ 

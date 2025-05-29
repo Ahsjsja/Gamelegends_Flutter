@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // Função para obter usuário logado do "banco" (SharedPreferences)
 Future<Map<String, dynamic>?> getUsuarioLogado() async {
   final prefs = await SharedPreferences.getInstance();
-  final tipo = prefs.getString('usuario_tipo'); // "Cliente", "ADM", "Desenvolvedor", etc
+  final tipo = prefs.getString('usuario'); // "Cliente", "ADM", "Desenvolvedor", etc
   if (tipo == null) return null;
   return {"usuario": tipo};
 }
@@ -12,13 +12,13 @@ Future<Map<String, dynamic>?> getUsuarioLogado() async {
 // Para simular cadastro/login (chame após login/cadastro com sucesso)
 Future<void> salvarUsuarioLogado(String tipo) async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('usuario_tipo', tipo); // Ex: "Cliente" ou "ADM" ou "Desenvolvedor"
+  await prefs.setString('usuario', tipo); // Ex: "Cliente" ou "ADM" ou "Desenvolvedor"
 }
 
 // Para simular logout
 Future<void> removerUsuarioLogado() async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.remove('usuario_tipo');
+  await prefs.remove('usuario');
 }
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
